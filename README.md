@@ -5,6 +5,9 @@ den Editor bereit, xterm.js das größenverstellbare Terminal. Python läuft üb
 Pyodide in einem Web Worker. Programme mit `input()` lesen ihre Eingaben direkt
 aus dem Terminal – ohne Browserdialog.
 
+Auf Tablets folgt die Oberfläche dem sichtbaren Bereich der virtuellen Tastatur.
+Dadurch bleiben Terminaleingaben und die aktuelle Ausgabe beim Tippen sichtbar.
+
 ## Lokal starten
 
 ```bash

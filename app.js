@@ -4,9 +4,10 @@ const runLabel = document.querySelector("#runLabel");
 const fileInput = document.querySelector("#fileInput");
 const resizeHandle = document.querySelector("#resizeHandle");
 const terminalPanel = document.querySelector("#terminal");
+const ide = document.querySelector("#ide");
 
 const editor = window.CodeMirror.fromTextArea(source, {
-  mode: "python",
+  mode: { name: "python", version: 3, singleLineStringErrors: false },
   lineNumbers: true,
   indentUnit: 4,
   tabSize: 4,
@@ -61,6 +62,8 @@ function getWorker() {
     } else if (data.type === "input") {
       waitingForInput = true;
       currentInput = "";
+      ide.classList.add("terminal-input-active");
+      terminal.scrollToBottom();
       terminal.focus();
     } else if (data.type === "done") {
       finishRun();
@@ -80,6 +83,7 @@ function getWorker() {
 
 function finishRun() {
   waitingForInput = false;
+  ide.classList.remove("terminal-input-active");
   runButton.disabled = false;
   runLabel.textContent = "Ausführen";
   terminal.write("\r\n\x1b[90m› Prozess beendet.\x1b[0m\r\n");
@@ -138,7 +142,10 @@ function showToast(message) {
 }
 
 function resizeTerminal(clientY) {
-  const height = Math.min(window.innerHeight - 180, Math.max(92, window.innerHeight - clientY));
+  const viewportBottom = window.visualViewport
+    ? window.visualViewport.height + window.visualViewport.offsetTop
+    : window.innerHeight;
+  const height = Math.min(viewportBottom - 110, Math.max(92, viewportBottom - clientY));
   document.documentElement.style.setProperty("--terminal-height", `${height}px`);
   requestAnimationFrame(() => fitAddon.fit());
 }
@@ -174,10 +181,26 @@ resizeHandle.addEventListener("keydown", (event) => {
   document.documentElement.style.setProperty("--terminal-height", `${Math.max(92, terminalPanel.offsetHeight + change)}px`);
   fitAddon.fit();
 });
-window.addEventListener("resize", () => fitAddon.fit());
+function syncVisualViewport() {
+  const viewport = window.visualViewport;
+  const height = viewport?.height || window.innerHeight;
+  const top = viewport?.offsetTop || 0;
+  document.documentElement.style.setProperty("--viewport-height", `${height}px`);
+  document.documentElement.style.setProperty("--viewport-top", `${top}px`);
+  requestAnimationFrame(() => {
+    editor.refresh();
+    fitAddon.fit();
+    if (waitingForInput) terminal.scrollToBottom();
+  });
+}
+
+window.addEventListener("resize", syncVisualViewport);
+window.visualViewport?.addEventListener("resize", syncVisualViewport);
+window.visualViewport?.addEventListener("scroll", syncVisualViewport);
 
 const savedCode = localStorage.getItem("python-editor-code");
 if (savedCode) editor.setValue(savedCode);
+syncVisualViewport();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {

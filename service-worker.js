@@ -1,4 +1,4 @@
-const CACHE_NAME = "python-editor-v3";
+const CACHE_NAME = "python-editor-v4";
 const APP_FILES = ["./", "./index.html", "./styles.css", "./app.js", "./python-worker.js", "./manifest.webmanifest", "./icon.svg"];
 
 function isolatedResponse(response) {
