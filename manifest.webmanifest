@@ -1,0 +1,18 @@
+{
+  "name": "Python Editor",
+  "short_name": "PyEditor",
+  "description": "Eine minimalistische Python-IDE für den Browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
