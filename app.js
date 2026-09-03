@@ -68,6 +68,14 @@ async function runPython() {
     const lines = [];
     pyodide.setStdout({ batched: (text) => lines.push(text) });
     pyodide.setStderr({ batched: (text) => lines.push(text) });
+    pyodide.setStdin({
+      stdin: () => {
+        const value = window.prompt("Python input(): Bitte Eingabe eingeben");
+        if (value === null) throw new Error("Eingabe abgebrochen.");
+        return value;
+      },
+      isatty: true,
+    });
     await pyodide.runPythonAsync(editor.value);
     addTerminalLines(lines.join("\n") || "Programm erfolgreich beendet.");
   } catch (error) {
