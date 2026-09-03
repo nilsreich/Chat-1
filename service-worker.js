@@ -1,5 +1,13 @@
-const CACHE_NAME = "python-editor-v2";
-const APP_FILES = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest", "./icon.svg"];
+const CACHE_NAME = "python-editor-v3";
+const APP_FILES = ["./", "./index.html", "./styles.css", "./app.js", "./python-worker.js", "./manifest.webmanifest", "./icon.svg"];
+
+function isolatedResponse(response) {
+  if (!response || response.type === "opaque") return response;
+  const headers = new Headers(response.headers);
+  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES)));
@@ -17,12 +25,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request).then((response) => {
-      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+    caches.match(event.request).then((cached) => cached ? isolatedResponse(cached) : fetch(event.request).then((response) => {
+      if (response.ok) {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
       }
-      return response;
+      return isolatedResponse(response);
     })),
   );
 });

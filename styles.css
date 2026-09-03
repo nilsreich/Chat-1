@@ -57,46 +57,19 @@ button { cursor: pointer; }
 .button.primary:disabled { cursor: wait; opacity: .7; }
 .button span:first-child { margin-right: 5px; }
 
-.code-shell { position: absolute; inset: 0; overflow: hidden; counter-reset: line; }
-#codeInput, #highlighting {
-  position: absolute;
-  inset: 0;
-  margin: 0;
-  padding: 76px 34px 42px 72px;
-  border: 0;
-  overflow: auto;
-  white-space: pre;
-  tab-size: 4;
-  font: 14px/1.75 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-}
-#codeInput {
-  z-index: 2;
-  resize: none;
-  outline: none;
-  background: transparent;
-  color: transparent;
-  caret-color: #111820;
-  -webkit-text-fill-color: transparent;
-}
-#codeInput::selection { background: rgba(40, 105, 232, .18); }
-#highlighting { z-index: 1; pointer-events: none; color: #2e3742; }
-.line { display: block; position: relative; min-height: 1.75em; }
-.line::before {
-  counter-increment: line;
-  content: counter(line);
-  position: absolute;
-  left: -52px;
-  width: 30px;
-  color: #bcc2c9;
-  text-align: right;
-  user-select: none;
-}
-.tok-comment { color: #8b949e; font-style: italic; }
-.tok-keyword { color: #9d3ec5; }
-.tok-string { color: #27834d; }
-.tok-number { color: #bc5c16; }
-.tok-function { color: #215cc0; }
-.tok-builtin { color: #087f8c; }
+.code-shell { position: absolute; inset: 0; overflow: hidden; }
+.CodeMirror { height: 100%; padding-top: 66px; color: #2e3742; background: #fff; font: 14px/1.75 "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+.CodeMirror-scroll { padding: 10px 24px 40px 12px; }
+.CodeMirror-gutters { border: 0; background: #fff; }
+.CodeMirror-linenumber { padding: 0 14px 0 10px; color: #bcc2c9; }
+.CodeMirror-cursor { border-left-color: #111820; }
+.CodeMirror-selected { background: rgba(40, 105, 232, .14) !important; }
+.cm-s-default .cm-comment { color: #8b949e; font-style: italic; }
+.cm-s-default .cm-keyword { color: #9d3ec5; }
+.cm-s-default .cm-string { color: #27834d; }
+.cm-s-default .cm-number { color: #bc5c16; }
+.cm-s-default .cm-def, .cm-s-default .cm-variable-2 { color: #215cc0; }
+.cm-s-default .cm-builtin { color: #087f8c; }
 
 .resize-handle {
   z-index: 6;
@@ -129,12 +102,9 @@ button { cursor: pointer; }
 }
 .terminal-heading button { padding: 4px 7px; border: 0; background: transparent; color: #8a939d; font-size: 11px; text-transform: none; }
 .terminal-heading button:hover { color: var(--ink); }
-.terminal-output { height: calc(100% - 38px); overflow: auto; padding: 15px 24px 28px; font: 13px/1.65 "SFMono-Regular", Consolas, monospace; }
-.terminal-line { white-space: pre-wrap; overflow-wrap: anywhere; }
-.terminal-line + .terminal-line { margin-top: 2px; }
-.terminal-line.muted { color: var(--muted); }
-.terminal-line.error { color: #c52b36; }
-.prompt { color: var(--accent); margin-right: 8px; font-weight: 700; }
+.terminal-output { height: calc(100% - 38px); padding: 12px 18px; }
+.terminal-output .xterm { height: 100%; }
+.terminal-output .xterm-viewport { background: transparent !important; }
 
 .toast {
   position: fixed;
@@ -159,6 +129,5 @@ button { cursor: pointer; }
 @media (max-width: 620px) {
   .actions { top: 10px; right: 10px; left: 10px; justify-content: flex-end; }
   .button { padding: 0 9px; }
-  #codeInput, #highlighting { padding: 68px 18px 30px 54px; font-size: 12px; }
-  .line::before { left: -43px; }
+  .CodeMirror { padding-top: 58px; font-size: 12px; }
 }

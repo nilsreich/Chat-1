@@ -1,10 +1,9 @@
 # PyStudio
 
-Eine minimalistische, installierbare Python-IDE für den Browser. Sie bietet einen
-Editor mit Syntax-Highlighting, ein größenverstellbares Terminal, Datei-Upload und
--Download sowie echte Python-Ausführung über Pyodide. Auch Programme mit
-`input()` werden unterstützt; Eingaben werden bei der Ausführung in einem
-Browserdialog abgefragt.
+Eine minimalistische, installierbare Python-IDE für den Browser. CodeMirror stellt
+den Editor bereit, xterm.js das größenverstellbare Terminal. Python läuft über
+Pyodide in einem Web Worker. Programme mit `input()` lesen ihre Eingaben direkt
+aus dem Terminal – ohne Browserdialog.
 
 ## Lokal starten
 
