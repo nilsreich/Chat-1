@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <title>PyStudio — Python im Browser</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="PyStudio Startseite">
+          <span class="brand-mark" aria-hidden="true"><span>⌁</span></span>
+          <span>PyStudio</span>
+        </a>
+        <div class="project-title">
+          <button class="icon-button" aria-label="Zurück">‹</button>
+          <span>Unbenanntes Projekt</span>
+          <span class="saved-dot" title="Gespeichert"></span>
+        </div>
+        <nav class="top-actions" aria-label="Projektaktionen">
+          <button class="ghost-button" id="shareButton"><span>↗</span> Teilen</button>
+          <button class="run-button" id="runButton"><span class="play-icon">▶</span><span id="runLabel">Ausführen</span><kbd>⌘ ↵</kbd></button>
+          <button class="avatar" aria-label="Profil öffnen">NK</button>
+        </nav>
+      </header>
+
+      <main class="workspace">
+        <aside class="activity-bar" aria-label="Werkzeuge">
+          <button class="activity active" aria-label="Dateien" title="Dateien"><span class="files-icon">▱</span></button>
+          <button class="activity" aria-label="Suche" title="Suche">⌕</button>
+          <button class="activity" aria-label="Pakete" title="Pakete">⬡</button>
+          <span class="activity-spacer"></span>
+          <button class="activity" aria-label="Einstellungen" title="Einstellungen">⚙</button>
+        </aside>
+
+        <aside class="explorer">
+          <div class="panel-heading">
+            <span>DATEIEN</span>
+            <button id="newFileButton" aria-label="Neue Datei">＋</button>
+          </div>
+          <div class="project-row"><span class="chevron">⌄</span><strong>MEIN PROJEKT</strong></div>
+          <div class="file-row active"><span class="python-icon">Py</span><span>main.py</span><span class="file-status">M</span></div>
+          <div class="file-row"><span class="text-icon">≡</span><span>README.md</span></div>
+          <div class="explorer-tip">
+            <span>⌘</span>
+            <p><strong>Schnellstart</strong><br />Drücke ⌘ + Enter, um deinen Code auszuführen.</p>
+          </div>
+        </aside>
+
+        <section class="editor-area">
+          <div class="tabs">
+            <button class="tab active"><span class="python-icon">Py</span> main.py <span class="close">×</span></button>
+            <button class="add-tab" id="addTabButton" aria-label="Neuer Tab">＋</button>
+          </div>
+          <div class="editor-wrap">
+            <div class="breadcrumbs"><span>mein-projekt</span><b>›</b><span>main.py</span><b>›</b><span>◆ main</span></div>
+            <div class="code-editor">
+              <pre id="highlighting" aria-hidden="true"></pre>
+              <textarea id="codeInput" aria-label="Python Code Editor" spellcheck="false"># Willkommen bei PyStudio! 🐍
+
+def begruessung(name):
+    """Gibt eine freundliche Begrüßung zurück."""
+    return f"Hallo, {name}! Schön, dass du da bist."
+
+
+def main():
+    name = "Python-Entwickler:in"
+    nachricht = begruessung(name)
+    print(nachricht)
+
+    # Eine kleine Berechnung
+    zahlen = [2, 4, 6, 8, 10]
+    ergebnis = sum(zahlen)
+    print(f"Die Summe ist: {ergebnis}")
+
+
+if __name__ == "__main__":
+    main()</textarea>
+            </div>
+          </div>
+
+          <section class="console-panel" aria-label="Ausgabe">
+            <div class="console-tabs">
+              <button class="console-tab active">AUSGABE</button>
+              <button class="console-tab">PROBLEME <span class="count">0</span></button>
+              <button class="console-tab">TERMINAL</button>
+              <span class="console-actions">
+                <button id="clearButton" title="Ausgabe löschen">♲</button>
+                <button id="collapseButton" title="Ausgabe einklappen">⌄</button>
+              </span>
+            </div>
+            <div class="console-output" id="output" aria-live="polite"><div class="output-line muted">Bereit. Führe deinen Python-Code aus.</div></div>
+          </section>
+          <footer class="statusbar">
+            <div><span>⑂ main*</span><span>↻</span><span>ⓧ 0</span><span>△ 0</span></div>
+            <div><span>Ln 1, Col 1</span><span>Spaces: 4</span><span>UTF-8</span><span>LF</span><span>{ } Python</span><span class="live-dot"></span></div>
+          </footer>
+        </section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
