@@ -3,107 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#07111f" />
-    <title>PyStudio — Python im Browser</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Eine minimalistische Python-IDE für den Browser." />
+    <title>Python Editor</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/lib/codemirror.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="PyStudio Startseite">
-          <span class="brand-mark" aria-hidden="true"><span>⌁</span></span>
-          <span>PyStudio</span>
-        </a>
-        <div class="project-title">
-          <button class="icon-button" aria-label="Zurück">‹</button>
-          <span>Unbenanntes Projekt</span>
-          <span class="saved-dot" title="Gespeichert"></span>
+    <main class="ide" id="ide">
+      <section class="editor" aria-label="Python Editor">
+        <div class="actions" aria-label="Dateiaktionen">
+          <input id="fileInput" type="file" accept=".py,text/x-python,text/plain" hidden />
+          <button class="button secondary" id="uploadButton" type="button" title="Python-Datei öffnen">
+            <span aria-hidden="true">↑</span> Hochladen
+          </button>
+          <button class="button secondary" id="downloadButton" type="button" title="Python-Datei speichern">
+            <span aria-hidden="true">↓</span> Herunterladen
+          </button>
+          <button class="button primary" id="runButton" type="button" title="Code ausführen (Strg/⌘ + Enter)">
+            <span aria-hidden="true">▶</span> <span id="runLabel">Ausführen</span>
+          </button>
         </div>
-        <nav class="top-actions" aria-label="Projektaktionen">
-          <button class="ghost-button" id="shareButton"><span>↗</span> Teilen</button>
-          <button class="run-button" id="runButton"><span class="play-icon">▶</span><span id="runLabel">Ausführen</span><kbd>⌘ ↵</kbd></button>
-          <button class="avatar" aria-label="Profil öffnen">NK</button>
-        </nav>
-      </header>
 
-      <main class="workspace">
-        <aside class="activity-bar" aria-label="Werkzeuge">
-          <button class="activity active" aria-label="Dateien" title="Dateien"><span class="files-icon">▱</span></button>
-          <button class="activity" aria-label="Suche" title="Suche">⌕</button>
-          <button class="activity" aria-label="Pakete" title="Pakete">⬡</button>
-          <span class="activity-spacer"></span>
-          <button class="activity" aria-label="Einstellungen" title="Einstellungen">⚙</button>
-        </aside>
-
-        <aside class="explorer">
-          <div class="panel-heading">
-            <span>DATEIEN</span>
-            <button id="newFileButton" aria-label="Neue Datei">＋</button>
-          </div>
-          <div class="project-row"><span class="chevron">⌄</span><strong>MEIN PROJEKT</strong></div>
-          <div class="file-row active"><span class="python-icon">Py</span><span>main.py</span><span class="file-status">M</span></div>
-          <div class="file-row"><span class="text-icon">≡</span><span>README.md</span></div>
-          <div class="explorer-tip">
-            <span>⌘</span>
-            <p><strong>Schnellstart</strong><br />Drücke ⌘ + Enter, um deinen Code auszuführen.</p>
-          </div>
-        </aside>
-
-        <section class="editor-area">
-          <div class="tabs">
-            <button class="tab active"><span class="python-icon">Py</span> main.py <span class="close">×</span></button>
-            <button class="add-tab" id="addTabButton" aria-label="Neuer Tab">＋</button>
-          </div>
-          <div class="editor-wrap">
-            <div class="breadcrumbs"><span>mein-projekt</span><b>›</b><span>main.py</span><b>›</b><span>◆ main</span></div>
-            <div class="code-editor">
-              <pre id="highlighting" aria-hidden="true"></pre>
-              <textarea id="codeInput" aria-label="Python Code Editor" spellcheck="false"># Willkommen bei PyStudio! 🐍
-
-def begruessung(name):
-    """Gibt eine freundliche Begrüßung zurück."""
-    return f"Hallo, {name}! Schön, dass du da bist."
+        <div class="code-shell">
+          <textarea id="codeInput" aria-label="Python-Code" aria-describedby="shortcutHint">def fibonacci(anzahl):
+    folge = [0, 1]
+    while len(folge) < anzahl:
+        folge.append(folge[-1] + folge[-2])
+    return folge[:anzahl]
 
 
-def main():
-    name = "Python-Entwickler:in"
-    nachricht = begruessung(name)
-    print(nachricht)
+print("Hallo aus Python!")
+print(fibonacci(10))</textarea>
+        </div>
+        <span id="shortcutHint" class="visually-hidden">Mit Steuerung oder Command und Enter wird der Code ausgeführt.</span>
+      </section>
 
-    # Eine kleine Berechnung
-    zahlen = [2, 4, 6, 8, 10]
-    ergebnis = sum(zahlen)
-    print(f"Die Summe ist: {ergebnis}")
+      <div class="resize-handle" id="resizeHandle" role="separator" aria-label="Terminalgröße ändern" aria-orientation="horizontal" tabindex="0">
+        <span></span>
+      </div>
 
-
-if __name__ == "__main__":
-    main()</textarea>
-            </div>
-          </div>
-
-          <section class="console-panel" aria-label="Ausgabe">
-            <div class="console-tabs">
-              <button class="console-tab active">AUSGABE</button>
-              <button class="console-tab">PROBLEME <span class="count">0</span></button>
-              <button class="console-tab">TERMINAL</button>
-              <span class="console-actions">
-                <button id="clearButton" title="Ausgabe löschen">♲</button>
-                <button id="collapseButton" title="Ausgabe einklappen">⌄</button>
-              </span>
-            </div>
-            <div class="console-output" id="output" aria-live="polite"><div class="output-line muted">Bereit. Führe deinen Python-Code aus.</div></div>
-          </section>
-          <footer class="statusbar">
-            <div><span>⑂ main*</span><span>↻</span><span>ⓧ 0</span><span>△ 0</span></div>
-            <div><span>Ln 1, Col 1</span><span>Spaces: 4</span><span>UTF-8</span><span>LF</span><span>{ } Python</span><span class="live-dot"></span></div>
-          </footer>
-        </section>
-      </main>
-    </div>
+      <section class="terminal" id="terminal" aria-label="Terminal">
+        <div class="terminal-heading">
+          <span>Terminal</span>
+          <button id="clearButton" type="button">Leeren</button>
+        </div>
+        <div class="terminal-output" id="terminalOutput" aria-label="Python Terminal"></div>
+      </section>
+    </main>
     <div class="toast" id="toast" role="status"></div>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/lib/codemirror.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/mode/python/python.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js" crossorigin="anonymous"></script>
     <script src="app.js"></script>
   </body>
 </html>

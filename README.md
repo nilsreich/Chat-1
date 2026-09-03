@@ -1,7 +1,9 @@
 # PyStudio
 
-Eine moderne, browserbasierte Python-IDE mit Syntax-Highlighting, Dateiexplorer,
-Ausgabekonsole und echter Python-Ausführung über Pyodide.
+Eine minimalistische, installierbare Python-IDE für den Browser. CodeMirror stellt
+den Editor bereit, xterm.js das größenverstellbare Terminal. Python läuft über
+Pyodide in einem Web Worker. Programme mit `input()` lesen ihre Eingaben direkt
+aus dem Terminal – ohne Browserdialog.
 
 ## Lokal starten
 
